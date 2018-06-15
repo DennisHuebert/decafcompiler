@@ -1,0 +1,31 @@
+output prefix: llvm/test/1param
+llvmas: /usr/lib/llvm-3.8/bin/llvm-as
+llc: /usr/lib/llvm-3.8/bin/llc
+cc: gcc
+codegen: /home/acc33/sfuhome/cmpt379/CMPT_379/Assignment4/answer/decafcomp
+stdlib: /home/acc33/sfuhome/cmpt379/CMPT_379/Assignment4/answer/decaf-stdlib.c
+generating llvm code:/home/acc33/sfuhome/cmpt379/CMPT_379/Assignment4/answer/decafcomp ... ok
+; ModuleID = 'C'
+
+declare void @print_int(i32)
+
+define i32 @foo(i32 %x) {
+entry:
+  %x1 = alloca i32
+  store i32 %x, i32* %x1
+  store i32 1, i32* %x1
+  %x2 = load i32, i32* %x1
+  call void @print_int(i32 %x2)
+  ret i32 0
+}
+
+define i32 @main() {
+entry:
+  %calltmp = call i32 @foo(i32 1)
+  call void @print_int(i32 1)
+  ret i32 0
+}
+assembling to bitcode:/usr/lib/llvm-3.8/bin/llvm-as "llvm/test/1param.llvm" -o "llvm/test/1param.llvm.bc" ... ok
+converting to native code:/usr/lib/llvm-3.8/bin/llc "llvm/test/1param.llvm.bc" -o "llvm/test/1param.llvm.s" ... ok
+linking:gcc -o "llvm/test/1param.llvm.exec" "llvm/test/1param.llvm.s" "/home/acc33/sfuhome/cmpt379/CMPT_379/Assignment4/answer/decaf-stdlib.c" ... ok
+running:llvm/test/1param.llvm.exec ... ok

@@ -1,0 +1,78 @@
+output prefix: llvm/dev/skct
+llvmas: /usr/lib/llvm-3.8/bin/llvm-as
+llc: /usr/lib/llvm-3.8/bin/llc
+cc: gcc
+codegen: /home/acc33/sfuhome/cmpt379/CMPT_379/Assignment4/answer/decafcomp
+stdlib: /home/acc33/sfuhome/cmpt379/CMPT_379/Assignment4/answer/decaf-stdlib.c
+generating llvm code:/home/acc33/sfuhome/cmpt379/CMPT_379/Assignment4/answer/decafcomp ... ok
+; ModuleID = 'foo'
+
+@globalstring = private unnamed_addr constant [4 x i8] c"foo\00"
+
+declare void @print_int(i32)
+
+declare void @print_string(i8*)
+
+define i1 @foo() {
+entry:
+  call void @print_string(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @globalstring, i32 0, i32 0))
+  ret i1 false
+}
+
+define i32 @main() {
+entry:
+  %flag = alloca i1
+  br label %scstart
+
+scstart:                                          ; preds = %entry
+  br i1 true, label %sctrue, label %scfalse
+
+sctrue:                                           ; preds = %scstart
+  br label %scphi
+
+scfalse:                                          ; preds = %scstart
+  br label %scstart1
+
+scphi:                                            ; preds = %end5, %sctrue
+  %phival6 = phi i1 [ true, %sctrue ], [ %ortmp, %scfalse ]
+  br label %end
+
+end:                                              ; preds = %scphi
+  store i1 %phival6, i1* %flag
+  %flag7 = load i1, i1* %flag
+  %zexttmp = zext i1 %flag7 to i32
+  call void @print_int(i32 %zexttmp)
+  ret i32 0
+
+scstart1:                                         ; preds = %scfalse
+  %calltmp = call i1 @foo()
+  %eqtmp = icmp eq i1 %calltmp, false
+  br i1 %eqtmp, label %sctrue2, label %scfalse3
+
+sctrue2:                                          ; preds = %scstart1
+  br label %scphi4
+
+scfalse3:                                         ; preds = %scstart1
+  %andtmp = and i1 %calltmp, false
+  br label %scphi4
+
+scphi4:                                           ; preds = %scfalse3, %sctrue2
+  %phival = phi i1 [ %calltmp, %sctrue2 ], [ %andtmp, %scfalse3 ]
+  br label %end5
+
+end5:                                             ; preds = %scphi4
+  %ortmp = or i1 true, %phival
+  br label %scphi
+}
+assembling to bitcode:/usr/lib/llvm-3.8/bin/llvm-as "llvm/dev/skct.llvm" -o "llvm/dev/skct.llvm.bc" ... failed (1)
+/usr/lib/llvm-3.8/bin/llvm-as: assembly parsed, but does not verify as correct!
+PHI node entries do not match predecessors!
+  %phival6 = phi i1 [ true, %sctrue ], [ %ortmp, %scfalse ]
+label %scfalse
+label %end5
+Instruction does not dominate all uses!
+  %ortmp = or i1 true, %phival
+  %phival6 = phi i1 [ true, %sctrue ], [ %ortmp, %scfalse ]
+converting to native code:/usr/lib/llvm-3.8/bin/llc "llvm/dev/skct.llvm.bc" -o "llvm/dev/skct.llvm.s" ... ok
+linking:gcc -o "llvm/dev/skct.llvm.exec" "llvm/dev/skct.llvm.s" "/home/acc33/sfuhome/cmpt379/CMPT_379/Assignment4/answer/decaf-stdlib.c" ... ok
+running:llvm/dev/skct.llvm.exec ... ok

@@ -1,0 +1,21 @@
+output prefix: llvm/test/multi-var
+llvmas: /usr/lib/llvm-3.8/bin/llvm-as
+llc: /usr/lib/llvm-3.8/bin/llc
+cc: gcc
+codegen: /home/acc33/sfuhome/cmpt379/CMPT_379/Assignment4/answer/decafcomp
+stdlib: /home/acc33/sfuhome/cmpt379/CMPT_379/Assignment4/answer/decaf-stdlib.c
+generating llvm code:/home/acc33/sfuhome/cmpt379/CMPT_379/Assignment4/answer/decafcomp ... ok
+; ModuleID = 'QuickSort'
+
+@a = internal global i32 0
+@b = internal global i32 0
+@c = internal global i32 0
+
+define void @main() {
+entry:
+  ret void
+}
+assembling to bitcode:/usr/lib/llvm-3.8/bin/llvm-as "llvm/test/multi-var.llvm" -o "llvm/test/multi-var.llvm.bc" ... ok
+converting to native code:/usr/lib/llvm-3.8/bin/llc "llvm/test/multi-var.llvm.bc" -o "llvm/test/multi-var.llvm.s" ... ok
+linking:gcc -o "llvm/test/multi-var.llvm.exec" "llvm/test/multi-var.llvm.s" "/home/acc33/sfuhome/cmpt379/CMPT_379/Assignment4/answer/decaf-stdlib.c" ... ok
+running:llvm/test/multi-var.llvm.exec ... failed (160)

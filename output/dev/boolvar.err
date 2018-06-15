@@ -1,0 +1,24 @@
+output prefix: llvm/dev/boolvar
+llvmas: /usr/lib/llvm-3.8/bin/llvm-as
+llc: /usr/lib/llvm-3.8/bin/llc
+cc: gcc
+codegen: /home/acc33/sfuhome/cmpt379/CMPT_379/Assignment4/answer/decafcomp
+stdlib: /home/acc33/sfuhome/cmpt379/CMPT_379/Assignment4/answer/decaf-stdlib.c
+generating llvm code:/home/acc33/sfuhome/cmpt379/CMPT_379/Assignment4/answer/decafcomp ... ok
+; ModuleID = 'Test'
+
+declare void @print_int(i32)
+
+define i32 @main() {
+entry:
+  %x = alloca i1
+  store i1 true, i1* %x
+  %x1 = load i1, i1* %x
+  %zexttmp = zext i1 %x1 to i32
+  call void @print_int(i32 %zexttmp)
+  ret i32 0
+}
+assembling to bitcode:/usr/lib/llvm-3.8/bin/llvm-as "llvm/dev/boolvar.llvm" -o "llvm/dev/boolvar.llvm.bc" ... ok
+converting to native code:/usr/lib/llvm-3.8/bin/llc "llvm/dev/boolvar.llvm.bc" -o "llvm/dev/boolvar.llvm.s" ... ok
+linking:gcc -o "llvm/dev/boolvar.llvm.exec" "llvm/dev/boolvar.llvm.s" "/home/acc33/sfuhome/cmpt379/CMPT_379/Assignment4/answer/decaf-stdlib.c" ... ok
+running:llvm/dev/boolvar.llvm.exec ... ok

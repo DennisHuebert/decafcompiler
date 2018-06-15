@@ -1,0 +1,48 @@
+output prefix: llvm/dev/expr-testfile-5
+llvmas: /usr/lib/llvm-3.8/bin/llvm-as
+llc: /usr/lib/llvm-3.8/bin/llc
+cc: gcc
+codegen: /home/acc33/sfuhome/cmpt379/CMPT_379/Assignment4/answer/decafcomp
+stdlib: /home/acc33/sfuhome/cmpt379/CMPT_379/Assignment4/answer/decaf-stdlib.c
+generating llvm code:/home/acc33/sfuhome/cmpt379/CMPT_379/Assignment4/answer/decafcomp ... ok
+; ModuleID = 'Test'
+
+declare void @print_int(i32)
+
+define i32 @main() {
+entry:
+  %x = alloca i1
+  %y = alloca i1
+  %z = alloca i1
+  store i1 true, i1* %x
+  store i1 true, i1* %y
+  br label %scstart
+
+scstart:                                          ; preds = %entry
+  %x1 = load i1, i1* %x
+  %eqtmp = icmp eq i1 %x1, false
+  br i1 %eqtmp, label %sctrue, label %scfalse
+
+sctrue:                                           ; preds = %scstart
+  br label %scphi
+
+scfalse:                                          ; preds = %scstart
+  %y2 = load i1, i1* %y
+  %andtmp = and i1 %x1, %y2
+  br label %scphi
+
+scphi:                                            ; preds = %scfalse, %sctrue
+  %phival = phi i1 [ %x1, %sctrue ], [ %andtmp, %scfalse ]
+  br label %end
+
+end:                                              ; preds = %scphi
+  store i1 %phival, i1* %z
+  %z3 = load i1, i1* %z
+  %zexttmp = zext i1 %z3 to i32
+  call void @print_int(i32 %zexttmp)
+  ret i32 0
+}
+assembling to bitcode:/usr/lib/llvm-3.8/bin/llvm-as "llvm/dev/expr-testfile-5.llvm" -o "llvm/dev/expr-testfile-5.llvm.bc" ... ok
+converting to native code:/usr/lib/llvm-3.8/bin/llc "llvm/dev/expr-testfile-5.llvm.bc" -o "llvm/dev/expr-testfile-5.llvm.s" ... ok
+linking:gcc -o "llvm/dev/expr-testfile-5.llvm.exec" "llvm/dev/expr-testfile-5.llvm.s" "/home/acc33/sfuhome/cmpt379/CMPT_379/Assignment4/answer/decaf-stdlib.c" ... ok
+running:llvm/dev/expr-testfile-5.llvm.exec ... ok

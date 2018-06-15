@@ -1,0 +1,6 @@
+; ModuleID = 'C'
+
+define void @f() {
+entry:
+  ret void
+}

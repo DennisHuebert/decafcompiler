@@ -1,0 +1,60 @@
+output prefix: llvm/test/gcd3
+llvmas: /usr/lib/llvm-3.8/bin/llvm-as
+llc: /usr/lib/llvm-3.8/bin/llc
+cc: gcc
+codegen: /home/acc33/sfuhome/cmpt379/CMPT_379/Assignment4/answer/decafcomp
+stdlib: /home/acc33/sfuhome/cmpt379/CMPT_379/Assignment4/answer/decaf-stdlib.c
+generating llvm code:/home/acc33/sfuhome/cmpt379/CMPT_379/Assignment4/answer/decafcomp ... ok
+; ModuleID = 'GreatestCommonDivisor'
+
+@a = internal global i32 10
+@b = internal global i32 20
+
+declare void @print_int(i32)
+
+declare i32 @read_int()
+
+define i32 @main() {
+entry:
+  %calltmp = call i32 @read_int()
+  %calltmp1 = call i32 @read_int()
+  %calltmp2 = call i32 @gcd(i32 %calltmp, i32 %calltmp1)
+  call void @print_int(i32 %calltmp2)
+  ret i32 0
+}
+
+define i32 @gcd(i32 %a, i32 %b) {
+entry:
+  %a1 = alloca i32
+  store i32 %a, i32* %a1
+  %b2 = alloca i32
+  store i32 %b, i32* %b2
+  br label %ifstart
+
+ifstart:                                          ; preds = %entry
+  %b3 = load i32, i32* %b2
+  %eqtmp = icmp eq i32 %b3, 0
+  br i1 %eqtmp, label %iftrue, label %iffalse
+
+iftrue:                                           ; preds = %ifstart
+  %a4 = load i32, i32* %a1
+  ret i32 %a4
+  br label %end
+
+end:                                              ; preds = %iffalse, %iftrue
+  ret i32 0
+
+iffalse:                                          ; preds = %ifstart
+  %b5 = load i32, i32* %b2
+  %a6 = load i32, i32* %a1
+  %b7 = load i32, i32* %b2
+  %modtmp = srem i32 %a6, %b7
+  %calltmp = call i32 @gcd(i32 %b5, i32 %modtmp)
+  ret i32 %calltmp
+  br label %end
+}
+assembling to bitcode:/usr/lib/llvm-3.8/bin/llvm-as "llvm/test/gcd3.llvm" -o "llvm/test/gcd3.llvm.bc" ... ok
+converting to native code:/usr/lib/llvm-3.8/bin/llc "llvm/test/gcd3.llvm.bc" -o "llvm/test/gcd3.llvm.s" ... ok
+linking:gcc -o "llvm/test/gcd3.llvm.exec" "llvm/test/gcd3.llvm.s" "/home/acc33/sfuhome/cmpt379/CMPT_379/Assignment4/answer/decaf-stdlib.c" ... ok
+using input file: /home/acc33/sfuhome/cmpt379/CMPT_379/Assignment4/testcases/test/gcd3.in
+running:llvm/test/gcd3.llvm.exec ... ok

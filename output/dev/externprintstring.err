@@ -1,0 +1,24 @@
+output prefix: llvm/dev/externprintstring
+llvmas: /usr/lib/llvm-3.8/bin/llvm-as
+llc: /usr/lib/llvm-3.8/bin/llc
+cc: gcc
+codegen: /home/acc33/sfuhome/cmpt379/CMPT_379/Assignment4/answer/decafcomp
+stdlib: /home/acc33/sfuhome/cmpt379/CMPT_379/Assignment4/answer/decaf-stdlib.c
+generating llvm code:/home/acc33/sfuhome/cmpt379/CMPT_379/Assignment4/answer/decafcomp ... ok
+; ModuleID = 'Test'
+
+@globalstring = private unnamed_addr constant [13 x i8] c"hello world\0A\00"
+
+declare void @print_string(i8*)
+
+define i32 @main() {
+entry:
+  %x = alloca i32
+  store i32 1, i32* %x
+  call void @print_string(i8* getelementptr inbounds ([13 x i8], [13 x i8]* @globalstring, i32 0, i32 0))
+  ret i32 0
+}
+assembling to bitcode:/usr/lib/llvm-3.8/bin/llvm-as "llvm/dev/externprintstring.llvm" -o "llvm/dev/externprintstring.llvm.bc" ... ok
+converting to native code:/usr/lib/llvm-3.8/bin/llc "llvm/dev/externprintstring.llvm.bc" -o "llvm/dev/externprintstring.llvm.s" ... ok
+linking:gcc -o "llvm/dev/externprintstring.llvm.exec" "llvm/dev/externprintstring.llvm.s" "/home/acc33/sfuhome/cmpt379/CMPT_379/Assignment4/answer/decaf-stdlib.c" ... ok
+running:llvm/dev/externprintstring.llvm.exec ... ok

@@ -1,0 +1,12 @@
+; ModuleID = 'C'
+
+define i1 @f() {
+entry:
+  ret i1 true
+}
+
+define void @main() {
+entry:
+  %calltmp = call i1 @f()
+  ret void
+}

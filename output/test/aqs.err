@@ -1,0 +1,23 @@
+output prefix: llvm/test/aqs
+llvmas: /usr/lib/llvm-3.8/bin/llvm-as
+llc: /usr/lib/llvm-3.8/bin/llc
+cc: gcc
+codegen: /home/acc33/sfuhome/cmpt379/CMPT_379/Assignment4/answer/decafcomp
+stdlib: /home/acc33/sfuhome/cmpt379/CMPT_379/Assignment4/answer/decaf-stdlib.c
+generating llvm code:/home/acc33/sfuhome/cmpt379/CMPT_379/Assignment4/answer/decafcomp ... ok
+; ModuleID = 'QuickSort'
+
+@x = internal global i32 0
+
+declare void @print_string(i8*)
+
+declare void @print_int(i32)
+
+define void @main() {
+entry:
+  ret void
+}
+assembling to bitcode:/usr/lib/llvm-3.8/bin/llvm-as "llvm/test/aqs.llvm" -o "llvm/test/aqs.llvm.bc" ... ok
+converting to native code:/usr/lib/llvm-3.8/bin/llc "llvm/test/aqs.llvm.bc" -o "llvm/test/aqs.llvm.s" ... ok
+linking:gcc -o "llvm/test/aqs.llvm.exec" "llvm/test/aqs.llvm.s" "/home/acc33/sfuhome/cmpt379/CMPT_379/Assignment4/answer/decaf-stdlib.c" ... ok
+running:llvm/test/aqs.llvm.exec ... failed (160)

@@ -1,0 +1,10 @@
+; ModuleID = 'QuickSort'
+
+@a = global [100 x i32] zeroinitializer
+@b = global [100 x i32] zeroinitializer
+@c = global [100 x i32] zeroinitializer
+
+define void @main() {
+entry:
+  ret void
+}

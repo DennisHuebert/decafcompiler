@@ -1,0 +1,17 @@
+; ModuleID = 'C'
+
+define void @f() {
+entry:
+  %x = alloca i32
+  br label %whilestart
+
+whilestart:                                       ; preds = %whiledo, %entry
+  br i1 true, label %whiledo, label %end
+
+whiledo:                                          ; preds = %whilestart
+  store i32 1, i32* %x
+  br label %whilestart
+
+end:                                              ; preds = %whilestart
+  ret void
+}

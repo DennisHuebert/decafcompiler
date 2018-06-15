@@ -1,0 +1,92 @@
+output prefix: llvm/dev/and
+llvmas: /usr/lib/llvm-3.8/bin/llvm-as
+llc: /usr/lib/llvm-3.8/bin/llc
+cc: gcc
+codegen: /home/acc33/sfuhome/cmpt379/CMPT_379/Assignment4/answer/decafcomp
+stdlib: /home/acc33/sfuhome/cmpt379/CMPT_379/Assignment4/answer/decaf-stdlib.c
+generating llvm code:/home/acc33/sfuhome/cmpt379/CMPT_379/Assignment4/answer/decafcomp ... ok
+; ModuleID = 'Test'
+
+declare void @print_int(i32)
+
+define i32 @main() {
+entry:
+  %x = alloca i32
+  br label %scstart
+
+scstart:                                          ; preds = %entry
+  br i1 false, label %sctrue, label %scfalse
+
+sctrue:                                           ; preds = %scstart
+  br label %scphi
+
+scfalse:                                          ; preds = %scstart
+  br label %scphi
+
+scphi:                                            ; preds = %scfalse, %sctrue
+  %phival = phi i1 [ true, %sctrue ], [ true, %scfalse ]
+  br label %end
+
+end:                                              ; preds = %scphi
+  %zexttmp = zext i1 %phival to i32
+  call void @print_int(i32 %zexttmp)
+  br label %scstart1
+
+scstart1:                                         ; preds = %end
+  br i1 false, label %sctrue2, label %scfalse3
+
+sctrue2:                                          ; preds = %scstart1
+  br label %scphi4
+
+scfalse3:                                         ; preds = %scstart1
+  br label %scphi4
+
+scphi4:                                           ; preds = %scfalse3, %sctrue2
+  %phival6 = phi i1 [ true, %sctrue2 ], [ false, %scfalse3 ]
+  br label %end5
+
+end5:                                             ; preds = %scphi4
+  %zexttmp7 = zext i1 %phival6 to i32
+  call void @print_int(i32 %zexttmp7)
+  br label %scstart8
+
+scstart8:                                         ; preds = %end5
+  br i1 true, label %sctrue9, label %scfalse10
+
+sctrue9:                                          ; preds = %scstart8
+  br label %scphi11
+
+scfalse10:                                        ; preds = %scstart8
+  br label %scphi11
+
+scphi11:                                          ; preds = %scfalse10, %sctrue9
+  %phival13 = phi i1 [ false, %sctrue9 ], [ false, %scfalse10 ]
+  br label %end12
+
+end12:                                            ; preds = %scphi11
+  %zexttmp14 = zext i1 %phival13 to i32
+  call void @print_int(i32 %zexttmp14)
+  br label %scstart15
+
+scstart15:                                        ; preds = %end12
+  br i1 true, label %sctrue16, label %scfalse17
+
+sctrue16:                                         ; preds = %scstart15
+  br label %scphi18
+
+scfalse17:                                        ; preds = %scstart15
+  br label %scphi18
+
+scphi18:                                          ; preds = %scfalse17, %sctrue16
+  %phival20 = phi i1 [ false, %sctrue16 ], [ false, %scfalse17 ]
+  br label %end19
+
+end19:                                            ; preds = %scphi18
+  %zexttmp21 = zext i1 %phival20 to i32
+  call void @print_int(i32 %zexttmp21)
+  ret i32 0
+}
+assembling to bitcode:/usr/lib/llvm-3.8/bin/llvm-as "llvm/dev/and.llvm" -o "llvm/dev/and.llvm.bc" ... ok
+converting to native code:/usr/lib/llvm-3.8/bin/llc "llvm/dev/and.llvm.bc" -o "llvm/dev/and.llvm.s" ... ok
+linking:gcc -o "llvm/dev/and.llvm.exec" "llvm/dev/and.llvm.s" "/home/acc33/sfuhome/cmpt379/CMPT_379/Assignment4/answer/decaf-stdlib.c" ... ok
+running:llvm/dev/and.llvm.exec ... ok

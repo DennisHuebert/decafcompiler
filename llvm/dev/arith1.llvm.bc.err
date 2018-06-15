@@ -1,0 +1,8 @@
+/usr/lib/llvm-3.8/bin/llvm-as: assembly parsed, but does not verify as correct!
+PHI node entries do not match predecessors!
+  %phival10 = phi i1 [ %a1, %sctrue ], [ %ortmp, %scfalse ]
+label %scfalse
+label %end6
+Instruction does not dominate all uses!
+  %ortmp = or i1 %a1, %phival
+  %phival10 = phi i1 [ %a1, %sctrue ], [ %ortmp, %scfalse ]

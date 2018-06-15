@@ -1,0 +1,3 @@
+/usr/lib/llvm-3.8/bin/llvm-as: llvm/dev/if-func3.llvm:5:7: error: value doesn't match function result type 'i1'
+  ret i32 1
+      ^

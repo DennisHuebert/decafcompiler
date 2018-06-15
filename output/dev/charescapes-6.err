@@ -1,0 +1,19 @@
+output prefix: llvm/dev/charescapes-6
+llvmas: /usr/lib/llvm-3.8/bin/llvm-as
+llc: /usr/lib/llvm-3.8/bin/llc
+cc: gcc
+codegen: /home/acc33/sfuhome/cmpt379/CMPT_379/Assignment4/answer/decafcomp
+stdlib: /home/acc33/sfuhome/cmpt379/CMPT_379/Assignment4/answer/decaf-stdlib.c
+generating llvm code:/home/acc33/sfuhome/cmpt379/CMPT_379/Assignment4/answer/decafcomp ... ok
+; ModuleID = 'Test'
+
+define i32 @main() {
+entry:
+  %c = alloca i32
+  store i32 12, i32* %c
+  ret i32 0
+}
+assembling to bitcode:/usr/lib/llvm-3.8/bin/llvm-as "llvm/dev/charescapes-6.llvm" -o "llvm/dev/charescapes-6.llvm.bc" ... ok
+converting to native code:/usr/lib/llvm-3.8/bin/llc "llvm/dev/charescapes-6.llvm.bc" -o "llvm/dev/charescapes-6.llvm.s" ... ok
+linking:gcc -o "llvm/dev/charescapes-6.llvm.exec" "llvm/dev/charescapes-6.llvm.s" "/home/acc33/sfuhome/cmpt379/CMPT_379/Assignment4/answer/decaf-stdlib.c" ... ok
+running:llvm/dev/charescapes-6.llvm.exec ... ok

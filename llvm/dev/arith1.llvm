@@ -1,0 +1,60 @@
+; ModuleID = 'foo'
+
+declare void @print_int(i32)
+
+define i32 @main() {
+entry:
+  %flag = alloca i1
+  %a = alloca i1
+  %b = alloca i1
+  %c = alloca i1
+  %size = alloca i32
+  store i1 true, i1* %a
+  store i1 false, i1* %b
+  store i1 true, i1* %c
+  br label %scstart
+
+scstart:                                          ; preds = %entry
+  %a1 = load i1, i1* %a
+  %eqtmp = icmp eq i1 %a1, true
+  br i1 %eqtmp, label %sctrue, label %scfalse
+
+sctrue:                                           ; preds = %scstart
+  br label %scphi
+
+scfalse:                                          ; preds = %scstart
+  br label %scstart2
+
+scphi:                                            ; preds = %end6, %sctrue
+  %phival10 = phi i1 [ %a1, %sctrue ], [ %ortmp, %scfalse ]
+  br label %end
+
+end:                                              ; preds = %scphi
+  store i1 %phival10, i1* %flag
+  store i32 0, i32* %size
+  %size11 = load i32, i32* %size
+  call void @print_int(i32 %size11)
+  ret i32 0
+
+scstart2:                                         ; preds = %scfalse
+  %b7 = load i1, i1* %b
+  %eqtmp8 = icmp eq i1 %b7, false
+  br i1 %eqtmp8, label %sctrue3, label %scfalse4
+
+sctrue3:                                          ; preds = %scstart2
+  br label %scphi5
+
+scfalse4:                                         ; preds = %scstart2
+  %c9 = load i1, i1* %c
+  %notmp = xor i1 %c9, true
+  %andtmp = and i1 %b7, %notmp
+  br label %scphi5
+
+scphi5:                                           ; preds = %scfalse4, %sctrue3
+  %phival = phi i1 [ %b7, %sctrue3 ], [ %andtmp, %scfalse4 ]
+  br label %end6
+
+end6:                                             ; preds = %scphi5
+  %ortmp = or i1 %a1, %phival
+  br label %scphi
+}

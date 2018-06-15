@@ -1,0 +1,8 @@
+package C {
+	func f() void {
+		var x int;
+		while (true) {
+			x = 1;
+		}
+	}
+}

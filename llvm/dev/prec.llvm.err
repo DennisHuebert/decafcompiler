@@ -1,0 +1,41 @@
+; ModuleID = 'prec'
+
+declare void @print_int(i32)
+
+define i32 @main() {
+entry:
+  %a = alloca i32
+  %b = alloca i32
+  %d = alloca i32
+  %c = alloca i1
+  store i32 3, i32* %a
+  store i32 7, i32* %b
+  br label %scstart
+
+scstart:                                          ; preds = %entry
+  br i1 true, label %sctrue, label %scfalse
+
+sctrue:                                           ; preds = %scstart
+  br label %scphi
+
+scfalse:                                          ; preds = %scstart
+  br label %scphi
+
+scphi:                                            ; preds = %scfalse, %sctrue
+  %phival = phi i1 [ true, %sctrue ], [ true, %scfalse ]
+  br label %end
+
+end:                                              ; preds = %scphi
+  store i1 %phival, i1* %c
+  store i32 -3, i32* %d
+  %a1 = load i32, i32* %a
+  call void @print_int(i32 %a1)
+  %b2 = load i32, i32* %b
+  call void @print_int(i32 %b2)
+  %c3 = load i1, i1* %c
+  %zexttmp = zext i1 %c3 to i32
+  call void @print_int(i32 %zexttmp)
+  %d4 = load i32, i32* %d
+  call void @print_int(i32 %d4)
+  ret i32 0
+}
